@@ -1,0 +1,84 @@
+<!html>
+<style>
+/*Style row formatter contents*/
+#example-table .tabulator-row table{
+    vertical-align: middle;
+    border-collapse:collapse;
+}
+
+#example-table .tabulator-row table img{
+    border:2px solid #ccc;
+}
+
+#example-table .tabulator-row table tr td{
+     border:none;
+}
+
+#example-table .tabulator-row table tr td:first-of-type{
+    width:60px;
+}
+
+#example-table .tabulator-row table tr td div{
+    padding:5px;
+}
+</style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/3.3.3/css/tabulator.min.css" rel="stylesheet">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/3.3.3/js/tabulator.min.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
+<script
+  src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+  crossorigin="anonymous"></script>
+
+  
+<script>
+//Define some test data
+var cheeseData = [
+    {id:1, type:"Brie", rind:"mould", age:"4 weeks", color:"white", image:"brie.jpg"},
+    {id:2, type:"Cheddar", rind:"none", age:"1 year", color:"yellow", image:"cheddar.jpg"},
+    {id:3, type:"Gouda", rind:"wax", age:"6 months", color:"cream", image:"gouda.jpg"},
+    {id:4, type:"Swiss", rind:"none", age:"9 months", color:"yellow", image:"swiss.jpg"},
+]
+
+//define Tabulator
+$("#example-table").tabulator({
+    height:"311px",
+    layout:"fitColumns",
+    resizableColumns:false,
+    columns:[
+        {title:"Cheese", field:"type", sorter:"string"},
+    ],
+    rowFormatter:function(row, data){
+        var element = row.getElement(),
+        data = row.getData(),
+        width = element.outerWidth(),
+        table;
+
+        //clear current row data
+        element.empty();
+
+        //define a table layout structure and set width of row
+        table = $("<table style='width:" + (width - 18) + "px;'><tr></tr></table>");
+
+        //add image on left of row
+        $("tr", table).append("<td><img src='/sample_data/row_formatter/" + data.image + "'></td>");
+
+        //add row data on right hand side
+        $("tr", table).append("<td><div><strong>Type:</strong> " + data.type + "</div><div><strong>Age:</strong> " + data.age + "</div><div><strong>Rind:</strong> " + data.rind + "</div><div><strong>Colour:</strong> " + data.color + "</div></td>");
+
+        //append newly formatted contents to the row
+        element.append(table);
+    },
+})
+
+//Load Data
+$("#example-table").tabulator("setData", cheeseData);
+</script>
+<body>
+<div id="example-table"></div>
+</body>
+</html>
